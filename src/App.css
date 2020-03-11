@@ -11,3 +11,11 @@
     padding: 20px;
     border-left: 1px solid black;
 }
+
+/* scramble */
+.scramble{
+    font-size: 1.3em;
+    word-spacing: 5px;
+    background-color: rgb(235, 235, 235);
+    padding: 10px;
+}

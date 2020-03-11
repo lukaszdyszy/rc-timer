@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './timer.css';
 
 let timerStart = false;
-const Timer = () => {
+const Timer = (props) => {
     let [timerStatus, timerControl] = useState('neutral');
     let [time, setTime] = useState(0);
     let [beginTime, setBeginTime] = useState(0);
@@ -43,6 +43,8 @@ const Timer = () => {
             timerStart = false;
             if(timerStatus=='ready'){
                 setTime(0);
+            } else if(timerStatus=='stopped'){
+                props.addTime(time);
             }
         }
     }, [timerStatus]);
