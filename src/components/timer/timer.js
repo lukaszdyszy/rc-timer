@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './timer.css';
+import parseTime from '../parseTime.js';
 
-let timerStart = false;
+let timerStatus = 'neutral';
+let beginTime = 0;
 const Timer = (props) => {
-    let [timerStatus, timerControl] = useState('neutral');
     let [time, setTime] = useState(0);
-    let [beginTime, setBeginTime] = useState(0);
 
     const runTime = () => {
-        if(timerStart){
+        if(timerStatus == 'running'){
             setTime(Date.now()-beginTime);
             setTimeout(runTime, 10);
         }
@@ -17,9 +17,11 @@ const Timer = (props) => {
     const spaceDown = (e) => {
         if(e.keyCode == 32){
             if(timerStatus == 'neutral'){
-                timerControl('ready');
+                timerStatus = 'ready';
+                setTime(0);
             } else if(timerStatus == 'running'){
-                timerControl('stopped');
+                timerStatus = 'stopped';
+                props.addTime(time);
             }
         }
     }
@@ -27,46 +29,19 @@ const Timer = (props) => {
     const spaceUp = (e) => {
         if(e.keyCode == 32){
             if(timerStatus == 'ready'){
-                setBeginTime(Date.now());
-                timerControl('running');
+                beginTime = Date.now();
+                timerStatus = 'running';
+                runTime();
             } else if(timerStatus == 'stopped'){
-                timerControl('neutral');
+                timerStatus = 'neutral';
             }
         }
-    }
-
-    useEffect(() => {
-        if(timerStatus=='running'){
-            timerStart = true;
-            runTime();
-        } else {
-            timerStart = false;
-            if(timerStatus=='ready'){
-                setTime(0);
-            } else if(timerStatus=='stopped'){
-                props.addTime(time);
-            }
-        }
-    }, [timerStatus]);
-
-
-    const parseTime = () => {
-        let min = Math.floor(time / 60000);
-        let sec = Math.floor((time - min*60000) / 1000);
-        let ms  = Math.floor((time - min*60000 - sec*1000) / 10);
-
-
-        if(min < 1){min = '';}else{min = min+':';}
-        if(sec < 10){sec='0'+sec;}sec=sec+':';
-        if(ms < 10){ms='0'+ms;}
-
-        return min + sec + ms;
     }
 
     return (
         <div className="timer-container">
             <input type="text" id="time" onKeyDown={spaceDown} onKeyUp={spaceUp}/>
-            <label htmlFor="time" id="time-label">{ parseTime() }</label>
+            <label htmlFor="time" id="time-label">{ parseTime(time) }</label>
         </div>
     )
 }
