@@ -27,6 +27,15 @@ const Results = (props) => {
         props.updateSolves(newSolves);
     }
 
+    const solution = (id) => {
+        let newSolves = [...props.solves];
+        let sol = prompt('Enter solution: ', newSolves[id].solution);
+        if(sol != null){
+            newSolves[id].solution = sol;
+            props.updateSolves(newSolves);
+        }
+    }
+
     let [markAll, setMarkAll] = useState(true);
     useEffect(() => {
         let newSolves = [...props.solves];
@@ -65,7 +74,10 @@ const Results = (props) => {
                                         onChange={() => {mark(index)}}/>
                                         <button onClick={() => {dropSolve(index)}}>Drop</button>
                                     </td>
-                                    <td>{solve.scramble}</td>
+                                    <td>
+                                        {solve.scramble}<button onClick={() => {solution(index)}}>add/edit solution</button><br/>
+                                        solution: {solve.solution}
+                                    </td>
                                     <td>{parseTime(solve.time)}</td>
                                     <td>
                                         <input type="checkbox" 

@@ -1,0 +1,18 @@
+.tools-container{
+    font-size: 1.2rem;
+}
+
+button.opt-button{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 15px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+button.opt-button:hover{
+    cursor: pointer;
+}
+
+.tool{
+    padding: 10px 0;
+}

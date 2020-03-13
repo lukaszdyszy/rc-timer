@@ -4,10 +4,12 @@ import Timer from './components/timer/timer.js';
 import Header from './components/header/header.js';
 import Scrambler from './components/scrambler/scrambler.js';
 import Results from './components/results/results.js';
+import Tools from './components/tools/tools.js';
 
 function App() {
   const [solves, updateSolves] = useState([]);
   const [scramble, generateScramble] = useState('');
+  const [cubeType, setCubeType] = useState('3x3x3');
 
   const addSolve = (time) => {
     let solve = {
@@ -29,8 +31,11 @@ function App() {
   }
 
   useEffect(() => {
-    generateScramble(Scrambler('3x3x3'));
+    generateScramble(Scrambler(cubeType));
   }, []);
+  useEffect(() => {
+    generateScramble(Scrambler(cubeType));
+  }, [cubeType]);
 
   return (
     <div className="App">
@@ -43,7 +48,7 @@ function App() {
             <Timer addTime={addSolve}/>
           </div>
           <div className="tools">
-            theme: white
+            <Tools cube={setCubeType} solves={solves} updateSolves={updateSolves}/>
           </div>
         </div>
         <div className="scramble">
