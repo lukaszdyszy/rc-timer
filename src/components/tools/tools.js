@@ -35,6 +35,23 @@ const Tools = (props) => {
         }
     }
 
+    const csvExport = () => {
+        let toExport = 'Lp.,Scramble,Solution,Time,Result\n';
+        props.solves.map((solve, index) => {
+            if(solve.marked){
+                let plus = ' ';
+                if(!solve.dnf && solve.penalty){plus='(+2)';}
+
+                let row = (index+1)+','+solve.scramble+','+solve.solution+','+parseTime(solve.time)+plus+','+parseTime(solve.result())+'\n';
+                toExport += row;
+            }
+        });
+        let toDown = document.createElement('a');
+        toDown.href = 'data:text/csv;charset=utf-8,' + encodeURI(toExport);
+        toDown.download = 'session.csv';
+        toDown.click();
+    }
+
     return (
         <div className="tools-container">
             <div className="tool">
@@ -56,6 +73,7 @@ const Tools = (props) => {
             </div>
             <div className="tool">
                 <button className="opt-button" onClick={clearSession}>Clear Session</button>
+                <button className="opt-button" onClick={csvExport}>Export selected to csv</button>
             </div>
         </div>
     )
