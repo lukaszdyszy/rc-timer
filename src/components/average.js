@@ -12,7 +12,7 @@ const average = (solves) => {
         } else {
             solves.sort((a, b) => a-b);
             if(dnfs==1){
-                solves.unshift('dnf');
+                solves.push('dnf');
             }
             let sum = 0;
             for(let i=1; i<solves.length-1; i++){

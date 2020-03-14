@@ -36,6 +36,12 @@ const Results = (props) => {
         }
     }
 
+    const showSolution = (id) => {
+        if(props.solves[id].solution.length > 0){
+            return 'solution: '+props.solves[id].solution;
+        }
+    }
+
     let [markAll, setMarkAll] = useState(true);
     useEffect(() => {
         let newSolves = [...props.solves];
@@ -76,7 +82,7 @@ const Results = (props) => {
                                     </td>
                                     <td>
                                         {solve.scramble}<button onClick={() => {solution(index)}}>add/edit solution</button><br/>
-                                        solution: {solve.solution}
+                                        {showSolution(index)}
                                     </td>
                                     <td>{parseTime(solve.time)}</td>
                                     <td>

@@ -7,7 +7,7 @@ button.opt-button{
     width: 100%;
     padding: 15px;
     font-weight: bold;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 button.opt-button:hover{
     cursor: pointer;
