@@ -5,7 +5,7 @@ const mean = (solves) => {
         } else {
             solves.sort((a, b) => a-b);
             let sum = 0;
-            for(let i=1; i<solves.length-1; i++){
+            for(let i=0; i<solves.length; i++){
                 sum += Math.floor(solves[i]/10)*10;
             }
             return sum/(solves.length);
