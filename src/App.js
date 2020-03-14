@@ -27,7 +27,7 @@ function App() {
     }
 
     updateSolves([...solves, solve]);
-    generateScramble(Scrambler('3x3x3'));
+    generateScramble(Scrambler(cubeType));
   }
 
   useEffect(() => {
