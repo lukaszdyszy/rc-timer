@@ -2,4 +2,15 @@
     background-color: rgba(199, 42, 42, 0.85);
     padding: 20px;
     font-size: 1.2rem;
+    display: flex;
+}
+
+.menu, .copyright{
+    flex: 1;
+}
+.copyright{
+    text-align: right;
+}
+a.gh{
+    padding-left: 25px;
 }
