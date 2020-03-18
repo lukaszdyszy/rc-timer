@@ -10,13 +10,19 @@ const randomize = (moves, moveSet, opposites, modes) => {
         let rnd;
         do {
             rnd = moveSet[Math.floor(Math.random()*moveSet.length)];
-        } while (locked[rnd] == true);
+        } while(locked[rnd] == true);
 
         if(opposites !== 'oneTime'){
-            for (let layer in locked) {
-                if((opposites !== false) && (!opposites[layer].includes(rnd))){locked[layer] = false}
-                else {locked[layer] = false}
-            }
+            let lays = Object.keys(locked);
+            lays.map((lay) => {
+                if(opposites == false){
+                    locked[lay] = false;
+                } else {
+                    if(!opposites[lay].includes(rnd)){
+                        locked[lay] = false;
+                    }
+                }
+            });
         }
         
         locked[rnd] = true;
@@ -36,12 +42,13 @@ const cubic = (cube) => {
     let layers;
     let moves;
     let opposites;
-    let locked;
 
     switch(cube)
     {
+        case '2x2x2':
         case '3x3x3': {
             moves = 25;
+            if(cube=='2x2x2'){moves=9;}
             layers = ['R', 'L', 'U', 'D', 'F', 'B'];
             opposites = {
                 'R': ['L'],
@@ -50,14 +57,6 @@ const cubic = (cube) => {
                 'D': ['U'],
                 'F': ['B'],
                 'B': ['F']
-            }
-            locked = {
-                'R': false,
-                'L': false,
-                'U': false,
-                'D': false,
-                'F': false,
-                'B': false
             }
         }
         break;
@@ -79,20 +78,6 @@ const cubic = (cube) => {
                 'Fw': ['B', 'Bw', 'F'],
                 'B': ['F', 'Fw', 'Bw'],
                 'Bw': ['F', 'Fw', 'B']
-            }
-            locked = {
-                'R': false,
-                'L': false,
-                'U': false,
-                'D': false,
-                'F': false,
-                'B': false,
-                'Rw': false,
-                'Lw': false,
-                'Uw': false,
-                'Dw': false,
-                'Fw': false,
-                'Bw': false
             }
         }
     }
