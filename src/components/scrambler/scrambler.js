@@ -92,18 +92,6 @@ const pyraminx = () => {
     let tips = ['r', 'l', 'u', 'b'];
     let moves = 8;
     let tipMoves;
-    let lockedL = {
-        'R': false,
-        'L': false,
-        'U': false,
-        'B': false
-    }
-    let lockedT = {
-        'r': false,
-        'l': false,
-        'u': false,
-        'b': false
-    }
 
     tipMoves = Math.floor(Math.random()*5);
     
