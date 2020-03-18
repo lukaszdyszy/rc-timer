@@ -42,6 +42,12 @@ const Results = (props) => {
         }
     }
 
+    const toRender = () => {
+        let arrToRender = [...props.solves];
+        arrToRender.reverse();
+        return arrToRender;
+    }
+
     let [markAll, setMarkAll] = useState(true);
     useEffect(() => {
         let newSolves = [...props.solves];
@@ -70,30 +76,30 @@ const Results = (props) => {
                 </thead>
                 <tbody>
                     {
-                        props.solves.map((solve, index) => {
+                        toRender().map((solve, index) => {
                             return (
-                                <tr key={index}>
+                                <tr key={props.solves.length - index}>
                                     <td>
-                                        {index+1}
+                                        {props.solves.length - index}
                                         <input type="checkbox" 
                                         checked={solve.marked}
-                                        onChange={() => {mark(index)}}/>
-                                        <button onClick={() => {dropSolve(index)}}>Drop</button>
+                                        onChange={() => {mark(props.solves.length - index - 1)}}/>
+                                        <button onClick={() => {dropSolve(props.solves.length - index - 1)}}>Drop</button>
                                     </td>
                                     <td>
-                                        {solve.scramble}<button onClick={() => {solution(index)}}>add/edit solution</button><br/>
-                                        {showSolution(index)}
+                                        {solve.scramble}<button onClick={() => {solution(props.solves.length - index - 1)}}>add/edit solution</button><br/>
+                                        {showSolution(props.solves.length - index - 1)}
                                     </td>
                                     <td>{parseTime(solve.time)}</td>
                                     <td>
                                         <input type="checkbox" 
                                         checked={solve.penalty}
-                                        onChange={() => {penalty(index)}}/>
+                                        onChange={() => {penalty(props.solves.length - index - 1)}}/>
                                     </td>
                                     <td>
                                         <input type="checkbox" 
                                         checked={solve.dnf}
-                                        onChange={() => {dnf(index)}}/>
+                                        onChange={() => {dnf(props.solves.length - index - 1)}}/>
                                     </td>
                                     <td>{parseTime(solve.result())}</td>
                                 </tr>
