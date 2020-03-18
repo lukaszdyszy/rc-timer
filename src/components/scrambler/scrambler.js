@@ -1,4 +1,36 @@
-const Scrambler = (cube) => {
+const randomize = (moves, moveSet, opposites, modes) => {
+    let retString = '';
+    let locked = {}
+    moveSet.map((move) => {
+        locked[move] = false;
+    });
+
+    for(let i=0; i<moves; i++)
+    {
+        let rnd;
+        do {
+            rnd = moveSet[Math.floor(Math.random()*moveSet.length)];
+        } while (locked[rnd] == true);
+
+        if(opposites !== 'oneTime'){
+            for (let layer in locked) {
+                if((opposites !== false) && (!opposites[layer].includes(rnd))){locked[layer] = false}
+                else {locked[layer] = false}
+            }
+        }
+        
+        locked[rnd] = true;
+
+        let mode = Math.floor(Math.random()*modes.length);
+        rnd += modes[mode];
+
+        retString += rnd+' ';
+    }
+
+    return retString;
+}
+
+const cubic = (cube) => {
     let scramble = '';
 
     let layers;
@@ -65,28 +97,51 @@ const Scrambler = (cube) => {
         }
     }
 
-    for(let i=0; i<moves; i++)
-    {
-        let rnd;
-        do {
-            rnd = layers[Math.floor(Math.random()*layers.length)];
-        } while (locked[rnd] == true);
+    return randomize(moves, layers, opposites, ['', '\'', '2']);
+}
 
-        for (let layer in locked) {
-            if(!opposites[layer].includes(rnd)){locked[layer] = false;}
-        }
-        locked[rnd] = true;
+const pyraminx = () => {
+    let scramble = '';
 
-        let mode = Math.floor(Math.random()*3);
-        switch(mode){
-            case 1: rnd+='\''; break;
-            case 2: rnd+='2'; break;
-        }
-
-        scramble += rnd+' ';
+    let layers = ['R', 'L', 'U', 'B'];
+    let tips = ['r', 'l', 'u', 'b'];
+    let moves = 8;
+    let tipMoves;
+    let lockedL = {
+        'R': false,
+        'L': false,
+        'U': false,
+        'B': false
+    }
+    let lockedT = {
+        'r': false,
+        'l': false,
+        'u': false,
+        'b': false
     }
 
+    tipMoves = Math.floor(Math.random()*5);
+    
+    scramble += randomize(moves, layers, false, ['', '\'']);
+    scramble += randomize(tipMoves, tips, 'oneTime', ['', '\'']);
+
     return scramble;
+}
+
+const Scrambler = (cube) => {
+    switch(cube){
+        case '2x2x2':
+        case '3x3x3':
+        case '4x4x4':
+        case '5x5x5': {
+            return cubic(cube);
+        }
+        break;
+        case 'pyraminx': {
+            return pyraminx();
+        }
+        break;
+    }
 }
 
 export default Scrambler;
