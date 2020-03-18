@@ -35,6 +35,16 @@ const Tools = (props) => {
         }
     }
 
+    const meanOf = (nr) => {
+        if(props.solves.length >= nr){
+            let times = props.solves.map((solve) => solve.result());
+            times.splice(0, times.length-nr);
+            return mean(times);
+        } else {
+            return 0;
+        }
+    }
+
     const csvExport = () => {
         let toExport = 'Lp.,Scramble,Solution,Time,Result\n';
         let marked = props.solves.map((solve, index) => {
@@ -65,11 +75,11 @@ const Tools = (props) => {
                 </select>
             </div>
             <div className="tool">
-                Session Avg: {parseTime(sessAvg())}
-                <br/>
-                Session Mean: {parseTime(sessMean())}
+                Session Avg: {parseTime(sessAvg())}; Mean: {parseTime(sessMean())}
             </div>
             <div className="tool">
+                Current Mo3: {parseTime(meanOf(3))}
+                <br/>
                 Current Avg5: {parseTime(avgOf(5))}
                 <br/>
                 Current Avg12: {parseTime(avgOf(12))}
