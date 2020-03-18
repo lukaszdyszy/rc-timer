@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './timer.css';
 import parseTime from '../parseTime.js';
 

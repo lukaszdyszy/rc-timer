@@ -53,7 +53,6 @@ function App() {
         </div>
         <div className="scramble">
           scramble: { scramble }
-          <button onClick={() => {console.log(Scrambler('pyraminx'))}}>gen pyr</button>
         </div>
       </main>
       <section className="results-table">
