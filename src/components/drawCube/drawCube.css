@@ -1,0 +1,41 @@
+.drawcube-container{
+    display: grid;
+    grid-gap: 3px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.layer{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.layer-u{
+    grid-column-start: 2;
+}
+.layer-l{
+    grid-row-start: 2;
+}
+.layer-f{
+    grid-row-start: 2;
+    grid-column-start: 2;
+}
+.layer-r{
+    grid-row-start: 2;
+    grid-column-start: 3;
+}
+.layer-b{
+    grid-row-start: 2;
+    grid-column-start: 4;
+}
+.layer-d{
+    grid-row-start: 3;
+    grid-column-start: 2;
+}
+
+.tile{
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+}

@@ -5,6 +5,7 @@ import Header from './components/header/header.js';
 import Scrambler from './components/scrambler/scrambler.js';
 import Results from './components/results/results.js';
 import Tools from './components/tools/tools.js';
+import DrawCube from './components/drawCube/drawCube.js';
 
 function App() {
   const [solves, updateSolves] = useState([]);
@@ -37,6 +38,12 @@ function App() {
     generateScramble(Scrambler(cubeType));
   }, [cubeType]);
 
+  const renderCube = () => {
+    if(scramble.length > 0){
+      return(<DrawCube scramble={scramble}/>);
+    }
+  }
+
   return (
     <div className="App">
       <header>
@@ -58,6 +65,11 @@ function App() {
       <section className="results-table">
         <Results solves={solves} updateSolves={updateSolves}/>
       </section>
+      <aside className="draw-cube shown">
+        {
+          renderCube()
+        }
+      </aside>
     </div>
   );
 }
