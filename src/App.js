@@ -11,6 +11,7 @@ function App() {
   const [solves, updateSolves] = useState([]);
   const [scramble, generateScramble] = useState('');
   const [cubeType, setCubeType] = useState('3x3x3');
+  const [cubeShown, setClass] = useState('shown');
 
   const addSolve = (time) => {
     let solve = {
@@ -44,6 +45,22 @@ function App() {
     }
   }
 
+  const showHideBtn = () => {
+    if(cubeShown === 'shown'){
+      return '>';
+    } else {
+      return '<';
+    }
+  }
+
+  const showHideCube = () => {
+    if(cubeShown === 'shown'){
+      setClass('hidden');
+    } else {
+      setClass('shown');
+    }
+  }
+
   return (
     <div className="App">
       <header>
@@ -65,7 +82,10 @@ function App() {
       <section className="results-table">
         <Results solves={solves} updateSolves={updateSolves}/>
       </section>
-      <aside className="draw-cube shown">
+      <aside className={`draw-cube ${cubeShown}`}>
+        <div className="show-cube" onClick={() => {showHideCube()}}>
+          {showHideBtn()}
+        </div>
         {
           renderCube()
         }
