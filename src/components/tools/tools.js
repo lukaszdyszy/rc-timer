@@ -73,7 +73,6 @@ const Tools = (props) => {
                     <option value="3x3x3">3x3x3</option>
                     <option value="4x4x4">4x4x4</option>
                     <option value="5x5x5">5x5x5</option>
-                    <option value="pyraminx">pyraminx</option>
                 </select>
             </div>
             <div className="tool">

@@ -7,29 +7,29 @@
 
 .layer{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr); */
 }
 
-.layer-u{
+.layer-U{
     grid-column-start: 2;
 }
-.layer-l{
+.layer-L{
     grid-row-start: 2;
 }
-.layer-f{
+.layer-F{
     grid-row-start: 2;
     grid-column-start: 2;
 }
-.layer-r{
+.layer-R{
     grid-row-start: 2;
     grid-column-start: 3;
 }
-.layer-b{
+.layer-B{
     grid-row-start: 2;
     grid-column-start: 4;
 }
-.layer-d{
+.layer-D{
     grid-row-start: 3;
     grid-column-start: 2;
 }

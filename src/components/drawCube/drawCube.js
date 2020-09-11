@@ -2,227 +2,241 @@ import React, {useState, useEffect} from 'react';
 import './drawCube.css';
 
 const DrawCube = (props) => {
-    const [cubeToRender, updateCube] = useState({
-        'U': ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white'],
-        'F': ['green', 'green', 'green', 'green', 'green', 'green', 'green', 'green', 'green'],
-        'D': ['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow'],
-        'B': ['blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue'],
-        'R': ['red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red'],
-        'L': ['orange', 'orange', 'orange', 'orange', 'orange', 'orange', 'orange', 'orange', 'orange']
-    });
-
-    const move = (layer, mod, cube) => {
-        switch(layer){
-            case 'U': {
-                let newU = [];
-                let newR = [];
-                let newB = [];
-                let newL = [];
-                let newF = [];
-                if(mod === '\''){
-                    newU = [cube[layer][2], cube[layer][5], cube[layer][8], cube[layer][1], cube[layer][4], cube[layer][7], cube[layer][0], cube[layer][3], cube[layer][6]];
-                    newR = [cube['F'][0], cube['F'][1], cube['F'][2], cube['R'][3], cube['R'][4], cube['R'][5], cube['R'][6], cube['R'][7], cube['R'][8]];
-                    newB = [cube['R'][0], cube['R'][1], cube['R'][2], cube['B'][3], cube['B'][4], cube['B'][5], cube['B'][6], cube['B'][7], cube['B'][8]];
-                    newL = [cube['B'][0], cube['B'][1], cube['B'][2], cube['L'][3], cube['L'][4], cube['L'][5], cube['L'][6], cube['L'][7], cube['L'][8]];
-                    newF = [cube['L'][0], cube['L'][1], cube['L'][2], cube['F'][3], cube['F'][4], cube['F'][5], cube['F'][6], cube['F'][7], cube['F'][8]];
-                } else if(mod === '2'){
-                    newU = [cube[layer][8], cube[layer][7], cube[layer][6], cube[layer][5], cube[layer][4], cube[layer][3], cube[layer][2], cube[layer][1], cube[layer][0]];
-                    newR = [cube['L'][0], cube['L'][1], cube['L'][2], cube['R'][3], cube['R'][4], cube['R'][5], cube['R'][6], cube['R'][7], cube['R'][8]];
-                    newB = [cube['F'][0], cube['F'][1], cube['F'][2], cube['B'][3], cube['B'][4], cube['B'][5], cube['B'][6], cube['B'][7], cube['B'][8]];
-                    newL = [cube['R'][0], cube['R'][1], cube['R'][2], cube['L'][3], cube['L'][4], cube['L'][5], cube['L'][6], cube['L'][7], cube['L'][8]];
-                    newF = [cube['B'][0], cube['B'][1], cube['B'][2], cube['F'][3], cube['F'][4], cube['F'][5], cube['F'][6], cube['F'][7], cube['F'][8]];
-                } else {
-                    newU = [cube[layer][6], cube[layer][3], cube[layer][0], cube[layer][7], cube[layer][4], cube[layer][1], cube[layer][8], cube[layer][5], cube[layer][2]];
-                    newR = [cube['B'][0], cube['B'][1], cube['B'][2], cube['R'][3], cube['R'][4], cube['R'][5], cube['R'][6], cube['R'][7], cube['R'][8]];
-                    newB = [cube['L'][0], cube['L'][1], cube['L'][2], cube['B'][3], cube['B'][4], cube['B'][5], cube['B'][6], cube['B'][7], cube['B'][8]];
-                    newL = [cube['F'][0], cube['F'][1], cube['F'][2], cube['L'][3], cube['L'][4], cube['L'][5], cube['L'][6], cube['L'][7], cube['L'][8]];
-                    newF = [cube['R'][0], cube['R'][1], cube['R'][2], cube['F'][3], cube['F'][4], cube['F'][5], cube['F'][6], cube['F'][7], cube['F'][8]];
-                }
-                cube = {'U': newU, 'F': newF, 'D': cube['D'], 'B': newB, 'R': newR, 'L': newL};
+    const createLayer = (color) => {
+        let rows = new Array();
+        for(let i=0; i<size; i++){
+            let columns = new Array();
+            for(let i=0; i<size; i++){
+                columns.push(color);
             }
-            break;
-            case 'D': {
-                let newD = [];
-                let newR = [];
-                let newB = [];
-                let newL = [];
-                let newF = [];
-                if(mod === '\''){
-                    newD = [cube[layer][2], cube[layer][5], cube[layer][8], cube[layer][1], cube[layer][4], cube[layer][7], cube[layer][0], cube[layer][3], cube[layer][6]];
-                    newR = [cube['R'][0], cube['R'][1], cube['R'][2], cube['R'][3], cube['R'][4], cube['R'][5], cube['B'][6], cube['B'][7], cube['B'][8]];
-                    newB = [cube['B'][0], cube['B'][1], cube['B'][2], cube['B'][3], cube['B'][4], cube['B'][5], cube['L'][6], cube['L'][7], cube['L'][8]];
-                    newL = [cube['L'][0], cube['L'][1], cube['L'][2], cube['L'][3], cube['L'][4], cube['L'][5], cube['F'][6], cube['F'][7], cube['F'][8]];
-                    newF = [cube['F'][0], cube['F'][1], cube['F'][2], cube['F'][3], cube['F'][4], cube['F'][5], cube['R'][6], cube['R'][7], cube['R'][8]];
-                } else if(mod === '2'){
-                    newD = [cube[layer][8], cube[layer][7], cube[layer][6], cube[layer][5], cube[layer][4], cube[layer][3], cube[layer][2], cube[layer][1], cube[layer][0]];
-                    newR = [cube['R'][0], cube['R'][1], cube['R'][2], cube['R'][3], cube['R'][4], cube['R'][5], cube['L'][6], cube['L'][7], cube['L'][8]];
-                    newB = [cube['B'][0], cube['B'][1], cube['B'][2], cube['B'][3], cube['B'][4], cube['B'][5], cube['F'][6], cube['F'][7], cube['F'][8]];
-                    newL = [cube['L'][0], cube['L'][1], cube['L'][2], cube['L'][3], cube['L'][4], cube['L'][5], cube['R'][6], cube['R'][7], cube['R'][8]];
-                    newF = [cube['F'][0], cube['F'][1], cube['F'][2], cube['F'][3], cube['F'][4], cube['F'][5], cube['B'][6], cube['B'][7], cube['B'][8]];
-                } else {
-                    newD = [cube[layer][6], cube[layer][3], cube[layer][0], cube[layer][7], cube[layer][4], cube[layer][1], cube[layer][8], cube[layer][5], cube[layer][2]];
-                    newR = [cube['R'][0], cube['R'][1], cube['R'][2], cube['R'][3], cube['R'][4], cube['R'][5], cube['F'][6], cube['F'][7], cube['F'][8]];
-                    newB = [cube['B'][0], cube['B'][1], cube['B'][2], cube['B'][3], cube['B'][4], cube['B'][5], cube['R'][6], cube['R'][7], cube['R'][8]];
-                    newL = [cube['L'][0], cube['L'][1], cube['L'][2], cube['L'][3], cube['L'][4], cube['L'][5], cube['B'][6], cube['B'][7], cube['B'][8]];
-                    newF = [cube['F'][0], cube['F'][1], cube['F'][2], cube['F'][3], cube['F'][4], cube['F'][5], cube['L'][6], cube['L'][7], cube['L'][8]];
-                }
-                cube = {'U': cube['U'], 'F': newF, 'D': newD, 'B': newB, 'R': newR, 'L': newL};
-            }
-            break;
-            case 'F': {
-                let newF = [];
-                let newU = [];
-                let newR = [];
-                let newD = [];
-                let newL = [];
-                if(mod === '\''){
-                    newF = [cube[layer][2], cube[layer][5], cube[layer][8], cube[layer][1], cube[layer][4], cube[layer][7], cube[layer][0], cube[layer][3], cube[layer][6]];
-                    newU = [cube['U'][0], cube['U'][1], cube['U'][2], cube['U'][3], cube['U'][4], cube['U'][5], cube['R'][0], cube['R'][3], cube['R'][6]];
-                    newR = [cube['D'][2], cube['R'][1], cube['R'][2], cube['D'][1], cube['R'][4], cube['R'][5], cube['D'][0], cube['R'][7], cube['R'][8]];
-                    newD = [cube['L'][2], cube['L'][5], cube['L'][8], cube['D'][3], cube['D'][4], cube['D'][5], cube['D'][6], cube['D'][7], cube['D'][8]];
-                    newL = [cube['L'][0], cube['L'][1], cube['U'][8], cube['L'][3], cube['L'][4], cube['U'][7], cube['L'][6], cube['L'][7], cube['U'][6]];
-                } else if(mod === '2'){
-                    newF = [cube[layer][8], cube[layer][7], cube[layer][6], cube[layer][5], cube[layer][4], cube[layer][3], cube[layer][2], cube[layer][1], cube[layer][0]];
-                    newU = [cube['U'][0], cube['U'][1], cube['U'][2], cube['U'][3], cube['U'][4], cube['U'][5], cube['D'][2], cube['D'][1], cube['D'][0]];
-                    newR = [cube['L'][8], cube['R'][1], cube['R'][2], cube['L'][5], cube['R'][4], cube['R'][5], cube['L'][2], cube['R'][7], cube['R'][8]];
-                    newD = [cube['U'][8], cube['U'][7], cube['U'][6], cube['D'][3], cube['D'][4], cube['D'][5], cube['D'][6], cube['D'][7], cube['D'][8]];
-                    newL = [cube['L'][0], cube['L'][1], cube['R'][6], cube['L'][3], cube['L'][4], cube['R'][3], cube['L'][6], cube['L'][7], cube['R'][0]];
-                } else {
-                    newF = [cube[layer][6], cube[layer][3], cube[layer][0], cube[layer][7], cube[layer][4], cube[layer][1], cube[layer][8], cube[layer][5], cube[layer][2]];
-                    newU = [cube['U'][0], cube['U'][1], cube['U'][2], cube['U'][3], cube['U'][4], cube['U'][5], cube['L'][8], cube['L'][5], cube['L'][2]];
-                    newR = [cube['U'][6], cube['R'][1], cube['R'][2], cube['U'][7], cube['R'][4], cube['R'][5], cube['U'][8], cube['R'][7], cube['R'][8]];
-                    newD = [cube['R'][6], cube['R'][3], cube['R'][0], cube['D'][3], cube['D'][4], cube['D'][5], cube['D'][6], cube['D'][7], cube['D'][8]];
-                    newL = [cube['L'][0], cube['L'][1], cube['D'][0], cube['L'][3], cube['L'][4], cube['D'][1], cube['L'][6], cube['L'][7], cube['D'][2]];
-                }
-                cube = {'U': newU, 'F': newF, 'D': newD, 'B': cube['B'], 'R': newR, 'L': newL};
-            }
-            break;
-            case 'B': {
-                let newB = [];
-                let newU = [];
-                let newR = [];
-                let newD = [];
-                let newL = [];
-                if(mod === '\''){
-                    newB = [cube[layer][2], cube[layer][5], cube[layer][8], cube[layer][1], cube[layer][4], cube[layer][7], cube[layer][0], cube[layer][3], cube[layer][6]];
-                    newU = [cube['L'][6], cube['L'][3], cube['L'][0], cube['U'][3], cube['U'][4], cube['U'][5], cube['U'][6], cube['U'][7], cube['U'][8]];
-                    newR = [cube['R'][0], cube['R'][1], cube['U'][0], cube['R'][3], cube['R'][4], cube['U'][1], cube['R'][6], cube['R'][7], cube['U'][2]];
-                    newD = [cube['D'][0], cube['D'][1], cube['D'][2], cube['D'][3], cube['D'][4], cube['D'][5], cube['R'][8], cube['R'][5], cube['R'][2]];
-                    newL = [cube['D'][6], cube['L'][1], cube['L'][2], cube['D'][7], cube['L'][4], cube['L'][5], cube['D'][8], cube['L'][7], cube['L'][8]];
-                } else if(mod === '2'){
-                    newB = [cube[layer][8], cube[layer][7], cube[layer][6], cube[layer][5], cube[layer][4], cube[layer][3], cube[layer][2], cube[layer][1], cube[layer][0]];
-                    newU = [cube['D'][8], cube['D'][7], cube['D'][6], cube['U'][3], cube['U'][4], cube['U'][5], cube['U'][6], cube['U'][7], cube['U'][8]];
-                    newR = [cube['R'][0], cube['R'][1], cube['L'][6], cube['R'][3], cube['R'][4], cube['L'][3], cube['R'][6], cube['R'][7], cube['L'][0]];
-                    newD = [cube['D'][0], cube['D'][1], cube['D'][2], cube['D'][3], cube['D'][4], cube['D'][5], cube['U'][2], cube['U'][1], cube['U'][0]];
-                    newL = [cube['R'][8], cube['L'][1], cube['L'][2], cube['R'][5], cube['L'][4], cube['L'][5], cube['R'][2], cube['L'][7], cube['L'][8]];
-                } else {
-                    newB = [cube[layer][6], cube[layer][3], cube[layer][0], cube[layer][7], cube[layer][4], cube[layer][1], cube[layer][8], cube[layer][5], cube[layer][2]];
-                    newU = [cube['R'][2], cube['R'][5], cube['R'][8], cube['U'][3], cube['U'][4], cube['U'][5], cube['U'][6], cube['U'][7], cube['U'][8]];
-                    newR = [cube['R'][0], cube['R'][1], cube['D'][8], cube['R'][3], cube['R'][4], cube['D'][7], cube['R'][6], cube['R'][7], cube['D'][6]];
-                    newD = [cube['D'][0], cube['D'][1], cube['D'][2], cube['D'][3], cube['D'][4], cube['D'][5], cube['L'][0], cube['L'][3], cube['L'][6]];
-                    newL = [cube['U'][2], cube['L'][1], cube['L'][2], cube['U'][1], cube['L'][4], cube['L'][5], cube['U'][0], cube['L'][7], cube['L'][8]];
-                }
-                cube = {'U': newU, 'F': cube['F'], 'D': newD, 'B': newB, 'R': newR, 'L': newL};
-            }
-            break;
-            case 'R': {
-                let newR = [];
-                let newU = [];
-                let newB = [];
-                let newD = [];
-                let newF = [];
-                if(mod === '\''){
-                    newR = [cube[layer][2], cube[layer][5], cube[layer][8], cube[layer][1], cube[layer][4], cube[layer][7], cube[layer][0], cube[layer][3], cube[layer][6]];
-                    newU = [cube['U'][0], cube['U'][1], cube['B'][6], cube['U'][3], cube['U'][4], cube['B'][3], cube['U'][6], cube['U'][7], cube['B'][0]];
-                    newB = [cube['D'][8], cube['B'][1], cube['B'][2], cube['D'][5], cube['B'][4], cube['B'][5], cube['D'][2], cube['B'][7], cube['B'][8]];
-                    newD = [cube['D'][0], cube['D'][1], cube['F'][2], cube['D'][3], cube['D'][4], cube['F'][5], cube['D'][6], cube['D'][7], cube['F'][8]];
-                    newF = [cube['F'][0], cube['F'][1], cube['U'][2], cube['F'][3], cube['F'][4], cube['U'][5], cube['F'][6], cube['F'][7], cube['U'][8]];
-                } else if(mod === '2'){
-                    newR = [cube[layer][8], cube[layer][7], cube[layer][6], cube[layer][5], cube[layer][4], cube[layer][3], cube[layer][2], cube[layer][1], cube[layer][0]];
-                    newU = [cube['U'][0], cube['U'][1], cube['D'][2], cube['U'][3], cube['U'][4], cube['D'][5], cube['U'][6], cube['U'][7], cube['D'][8]];
-                    newB = [cube['F'][8], cube['B'][1], cube['B'][2], cube['F'][5], cube['B'][4], cube['B'][5], cube['F'][2], cube['B'][7], cube['B'][8]];
-                    newD = [cube['D'][0], cube['D'][1], cube['U'][2], cube['D'][3], cube['D'][4], cube['U'][5], cube['D'][6], cube['D'][7], cube['U'][8]];
-                    newF = [cube['F'][0], cube['F'][1], cube['B'][6], cube['F'][3], cube['F'][4], cube['B'][3], cube['F'][6], cube['F'][7], cube['B'][0]];
-                } else {
-                    newR = [cube[layer][6], cube[layer][3], cube[layer][0], cube[layer][7], cube[layer][4], cube[layer][1], cube[layer][8], cube[layer][5], cube[layer][2]];
-                    newU = [cube['U'][0], cube['U'][1], cube['F'][2], cube['U'][3], cube['U'][4], cube['F'][5], cube['U'][6], cube['U'][7], cube['F'][8]];
-                    newB = [cube['U'][8], cube['B'][1], cube['B'][2], cube['U'][5], cube['B'][4], cube['B'][5], cube['U'][2], cube['B'][7], cube['B'][8]];
-                    newD = [cube['D'][0], cube['D'][1], cube['B'][6], cube['D'][3], cube['D'][4], cube['B'][3], cube['D'][6], cube['D'][7], cube['B'][0]];
-                    newF = [cube['F'][0], cube['F'][1], cube['D'][2], cube['F'][3], cube['F'][4], cube['D'][5], cube['F'][6], cube['F'][7], cube['D'][8]];
-                }
-                cube = {'U': newU, 'F': newF, 'D': newD, 'B': newB, 'R': newR, 'L': cube['L']};
-            }
-            break;
-            case 'L': {
-                let newL = [];
-                let newU = [];
-                let newB = [];
-                let newD = [];
-                let newF = [];
-                if(mod === '\''){
-                    newL = [cube[layer][2], cube[layer][5], cube[layer][8], cube[layer][1], cube[layer][4], cube[layer][7], cube[layer][0], cube[layer][3], cube[layer][6]];
-                    newU = [cube['F'][0], cube['U'][1], cube['U'][2], cube['F'][3], cube['U'][4], cube['U'][5], cube['F'][6], cube['U'][7], cube['U'][8]];
-                    newB = [cube['B'][0], cube['B'][1], cube['U'][6], cube['B'][3], cube['B'][4], cube['U'][3], cube['B'][6], cube['B'][7], cube['U'][0]];
-                    newD = [cube['B'][8], cube['D'][1], cube['D'][2], cube['B'][5], cube['D'][4], cube['D'][5], cube['B'][2], cube['D'][7], cube['D'][8]];
-                    newF = [cube['D'][0], cube['F'][1], cube['F'][2], cube['D'][3], cube['F'][4], cube['F'][5], cube['D'][6], cube['F'][7], cube['F'][8]];
-                } else if(mod === '2'){
-                    newL = [cube[layer][8], cube[layer][7], cube[layer][6], cube[layer][5], cube[layer][4], cube[layer][3], cube[layer][2], cube[layer][1], cube[layer][0]];
-                    newU = [cube['D'][0], cube['U'][1], cube['U'][2], cube['D'][3], cube['U'][4], cube['U'][5], cube['D'][6], cube['U'][7], cube['U'][8]];
-                    newB = [cube['B'][0], cube['B'][1], cube['F'][6], cube['B'][3], cube['B'][4], cube['F'][3], cube['B'][6], cube['B'][7], cube['F'][0]];
-                    newD = [cube['U'][0], cube['D'][1], cube['D'][2], cube['U'][3], cube['D'][4], cube['D'][5], cube['U'][6], cube['D'][7], cube['D'][8]];
-                    newF = [cube['B'][8], cube['F'][1], cube['F'][2], cube['B'][5], cube['F'][4], cube['F'][5], cube['B'][2], cube['F'][7], cube['F'][8]];
-                } else {
-                    newL = [cube[layer][6], cube[layer][3], cube[layer][0], cube[layer][7], cube[layer][4], cube[layer][1], cube[layer][8], cube[layer][5], cube[layer][2]];
-                    newU = [cube['B'][8], cube['U'][1], cube['U'][2], cube['B'][5], cube['U'][4], cube['U'][5], cube['B'][2], cube['U'][7], cube['U'][8]];
-                    newB = [cube['B'][0], cube['B'][1], cube['D'][6], cube['B'][3], cube['B'][4], cube['D'][3], cube['B'][6], cube['B'][7], cube['D'][0]];
-                    newD = [cube['F'][0], cube['D'][1], cube['D'][2], cube['F'][3], cube['D'][4], cube['D'][5], cube['F'][6], cube['D'][7], cube['D'][8]];
-                    newF = [cube['U'][0], cube['F'][1], cube['F'][2], cube['U'][3], cube['F'][4], cube['F'][5], cube['U'][6], cube['F'][7], cube['F'][8]];
-                }
-                cube = {'U': newU, 'F': newF, 'D': newD, 'B': newB, 'R': cube['R'], 'L': newL};
-            }
-            break;
+            rows.push(columns);
         }
-        return cube;
+        return rows;
+    }
+
+    const generateCube = () => {
+        return {
+            'U': createLayer('white'),
+            'F': createLayer('green'),
+            'D': createLayer('yellow'),
+            'B': createLayer('blue'),
+            'R': createLayer('red'),
+            'L': createLayer('orange')
+        }
+    }
+
+    const copy2d = (from) =>{
+        let newArr = new Array(from.length);
+    
+        for(let i=0; i<from.length; i++){
+            newArr[i] = from[i].map(el => el);
+        }
+    
+        return newArr;
+    }
+
+    const [size, setSize] = useState(props.size);
+    const [cube, updateCube] = useState(generateCube);
+
+    const rotate = (layer, times) => {
+        let fromLayer = copy2d(layer);
+        for(let i=0; i<times; i++){
+            let newLayer = createLayer('x');
+            fromLayer.forEach((row, rIndex) => {
+                row.forEach((column, cIndex) => {
+                    newLayer[cIndex][size-1-rIndex] = column;
+                });
+            });
+            fromLayer = copy2d(newLayer);
+        }
+        return fromLayer;
+    }
+
+    const axis = (onCube, layer, deep, times) => {
+        let tempCube = {
+            'U': copy2d(onCube['U']),
+            'F': copy2d(onCube['F']),
+            'D': copy2d(onCube['D']),
+            'B': copy2d(onCube['B']),
+            'R': copy2d(onCube['R']),
+            'L': copy2d(onCube['L'])
+        }
+        for(let i=0; i<times; i++){
+            switch(layer){
+                case 'U':{
+                    let newF = copy2d(tempCube['R']);
+                    let newR = copy2d(tempCube['B']);
+                    let newB = copy2d(tempCube['L']);
+                    let newL = copy2d(tempCube['F']);
+    
+                    for(let i=0; i<deep; i++){
+                        tempCube['F'][i] = newF[i];
+                        tempCube['R'][i] = newR[i];
+                        tempCube['B'][i] = newB[i];
+                        tempCube['L'][i] = newL[i];
+                    }
+                }
+                break;
+                case 'D':{
+                    let newF = copy2d(tempCube['L']);
+                    let newR = copy2d(tempCube['F']);
+                    let newB = copy2d(tempCube['R']);
+                    let newL = copy2d(tempCube['B']);
+                    
+                    for(let i=0; i<deep; i++){
+                        tempCube['F'][size-1-i] = newF[size-1-i];
+                        tempCube['R'][size-1-i] = newR[size-1-i];
+                        tempCube['B'][size-1-i] = newB[size-1-i];
+                        tempCube['L'][size-1-i] = newL[size-1-i];
+                    }
+                }
+                break;
+                case 'R':{
+                    let newF = copy2d(tempCube['D']);
+                    let newU = copy2d(tempCube['F']);
+                    let newB = copy2d(tempCube['U']);
+                    let newD = copy2d(tempCube['B']);
+                    
+                    for(let j=0; j<size; j++){
+                        for(let i=0; i<deep; i++){
+                            tempCube['F'][j][size-1-i] = newF[j][size-1-i];
+                            tempCube['U'][j][size-1-i] = newU[j][size-1-i];
+                            tempCube['B'][j][i] = newB[size-1-j][size-1-i];
+                            tempCube['D'][j][size-1-i] = newD[size-1-j][i];
+                        }
+                    }
+                }
+                break;
+                case 'L':{
+                    let newF = copy2d(tempCube['U']);
+                    let newU = copy2d(tempCube['B']);
+                    let newB = copy2d(tempCube['D']);
+                    let newD = copy2d(tempCube['F']);
+                    
+                    for(let j=0; j<size; j++){
+                        for(let i=0; i<deep; i++){
+                            tempCube['F'][j][i] = newF[j][i];
+                            tempCube['U'][j][i] = newU[size-1-j][size-1-i];
+                            tempCube['B'][size-1-j][size-1-i] = newB[j][i];
+                            tempCube['D'][j][i] = newD[j][i];
+                        }
+                    }
+                }
+                break;
+                case 'F':{
+                    let newU = copy2d(rotate(tempCube['L'], 1));
+                    let newR = copy2d(rotate(tempCube['U'], 1));
+                    let newD = copy2d(rotate(tempCube['R'], 1));
+                    let newL = copy2d(rotate(tempCube['D'], 1));
+                    
+                    for(let i=0; i<deep; i++){
+                        for(let j=0; j<size; j++){
+                            tempCube['U'][size-1-i][j] = newU[size-1-i][j];
+                            tempCube['R'][j][i] = newR[j][i];
+                            tempCube['D'][i][j] = newD[i][j];
+                            tempCube['L'][size-1-j][size-1-i] = newL[size-1-j][size-1-i];
+                        }
+                    }
+                }
+                break;
+                case 'B':{
+                    let newU = copy2d(rotate(tempCube['R'], 3));
+                    let newR = copy2d(rotate(tempCube['D'], 3));
+                    let newD = copy2d(rotate(tempCube['L'], 3));
+                    let newL = copy2d(rotate(tempCube['U'], 3));
+                    
+                    for(let i=0; i<deep; i++){
+                        for(let j=0; j<size; j++){
+                            tempCube['U'][i][j] = newU[i][j];
+                            tempCube['R'][size-1-j][size-1-i] = newR[size-1-j][size-1-i];
+                            tempCube['D'][size-1-i][j] = newD[size-1-i][j];
+                            tempCube['L'][j][i] = newL[j][i];
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        return tempCube;
+    }
+
+    const move = (onCube, layer, deep, times) => {
+        let tempCube = axis(onCube, layer, deep, times);
+        tempCube[layer] = rotate(tempCube[layer], times);
+        return tempCube;
+    }
+
+    const parseMove = (mv) => {
+        let layer;
+        let deep;
+        let times;
+        if(mv.indexOf('w') !== -1){
+            layer = mv[mv.indexOf('w')-1];
+            if(!isNaN(mv[0])){
+                deep = mv[0];
+            } else {
+                deep = 2;
+            }
+        } else {
+            layer = mv[0];
+            deep = 1;
+        }
+        if(mv[mv.length-1]===`'`){
+            times = 3;
+        } else if(mv[mv.length-1]===`2`){
+            times = 2;
+        } else {
+            times = 1;
+        }
+        return [layer, deep, times];
+    }
+
+    const doScramble = (scrmbl) => {
+        let tempCube = generateCube();
+        let mvs = scrmbl.split(' ');
+        mvs.pop();
+        mvs.forEach(mv => {
+            let parsed = parseMove(mv);
+            tempCube = move(tempCube, parsed[0], parsed[1], parsed[2]);
+        });
+        updateCube(tempCube);
     }
 
     useEffect(() => {
-        let newCube = {
-            'U': ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white'],
-            'F': ['green', 'green', 'green', 'green', 'green', 'green', 'green', 'green', 'green'],
-            'D': ['yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow', 'yellow'],
-            'B': ['blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue'],
-            'R': ['red', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'red'],
-            'L': ['orange', 'orange', 'orange', 'orange', 'orange', 'orange', 'orange', 'orange', 'orange']
-        }
-        let scramble = props.scramble.split(' ');
-        scramble.pop();
-        scramble.map(mv => {
-            mv = mv.split('');
-            newCube = move(mv[0], mv[1], newCube);
-        });
-        updateCube(newCube);
+        updateCube(generateCube());
+    }, [size]);
+
+    useEffect(() => {
+        doScramble(props.scramble);
     }, [props.scramble]);
+
+    useEffect(() => {
+        setSize(props.size);
+    }, [props.size]);
     
     return (
         <div className="drawcube-container">
-            <div className="layer layer-u">
-                {cubeToRender['U'].map(color => {return(<div className="tile" style={{ backgroundColor: color }}></div>)})}
-            </div>
-            <div className="layer layer-l">
-                {cubeToRender['L'].map(color => {return(<div className="tile" style={{ backgroundColor: color }}></div>)})}
-            </div>
-            <div className="layer layer-f">
-                {cubeToRender['F'].map(color => {return(<div className="tile" style={{ backgroundColor: color }}></div>)})}
-            </div>
-            <div className="layer layer-r">
-                {cubeToRender['R'].map(color => {return(<div className="tile" style={{ backgroundColor: color }}></div>)})}
-            </div>
-            <div className="layer layer-b">
-                {cubeToRender['B'].map(color => {return(<div className="tile" style={{ backgroundColor: color }}></div>)})}
-            </div>
-            <div className="layer layer-d">
-                {cubeToRender['D'].map(color => {return(<div className="tile" style={{ backgroundColor: color }}></div>)})}
-            </div>
+
+            {
+                Object.keys(cube).map(layer => {
+                    return(
+                        <div 
+                        className={`layer layer-${layer}`} 
+                        style={{gridTemplateColumns: `repeat(${size}, 1fr)`, gridTemplateRows: `repeat(${size}, 1fr)`}} >
+                            {
+                                cube[layer].map(row => {
+                                    return row.map(color => {
+                                        return(
+                                            <div className="tile" style={{backgroundColor: color}}></div>
+                                        )
+                                    })
+                                })
+                            }
+                        </div>
+                    )
+                })
+            }
+            
         </div>
     )
 }
