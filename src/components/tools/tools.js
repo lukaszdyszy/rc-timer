@@ -1,13 +1,21 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './tools.css';
 import average from '../average.js';
 import mean from '../mean.js';
 import parseTime from '../parseTime.js';
 
 const Tools = (props) => {
+    // const [selectedCube, selectCube] = useState('3x3x3');
+
     const cubeSelect = (e) => {
+        // selectCube(e.target.value);
         props.cube(e.target.value);
     }
+    // useEffect(() => {
+    //     if(props.cube.length === 0){
+    //         props.cube(selectedCube);
+    //     }
+    // }, [props.cube]);
 
     const clearSession = () => {
         if(window.confirm('Are you sure?')){
@@ -73,6 +81,7 @@ const Tools = (props) => {
                     <option value="3x3x3">3x3x3</option>
                     <option value="4x4x4">4x4x4</option>
                     <option value="5x5x5">5x5x5</option>
+                    <option value="pyraminx">pyraminx</option>
                 </select>
             </div>
             <div className="tool">

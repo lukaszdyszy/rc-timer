@@ -36,16 +36,31 @@ function App() {
   useEffect(() => {
     generateScramble(Scrambler(cubeType));
   }, []);
+
   useEffect(() => {
-    generateScramble(Scrambler(cubeType));
+    setDisplay('none');
+    if(cubeType != 'pyraminx'){
+      setTimeout(function(){
+        setDisplay('block');
+      }, 100);
+    }
   }, [cubeType]);
+
+
+  useEffect(() => {
+    if(cubeDisplay === 'block'){
+      generateScramble(Scrambler(cubeType));
+    }
+  }, [cubeDisplay]);
 
   const cubeSize = () => {
     return parseInt(cubeType.split('x')[0]);
   }
 
   const renderCube = () => {
-    return(<DrawCube scramble={scramble} size={cubeSize()}/>);
+    // if(cubeType.length > 0){
+      return(<DrawCube scramble={scramble} size={cubeSize()}/>);
+    // }
   }
 
   const showHideBtn = () => {
@@ -87,7 +102,9 @@ function App() {
       </section>
       <aside className={`draw-cube ${cubeShown}`} style={{display: cubeDisplay}}>
         <div className="show-cube" onClick={() => {showHideCube()}}>
-          {showHideBtn()}
+          {
+            showHideBtn()
+          }
         </div>
         {
           renderCube()
